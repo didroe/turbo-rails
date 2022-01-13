@@ -1,4 +1,5 @@
 require "rails/engine"
+require "turbo/frame_redirect_middleware"
 require "turbo/test_assertions"
 
 module Turbo
@@ -45,6 +46,10 @@ module Turbo
       ActiveSupport.on_load(:active_record) do
         include Turbo::Broadcastable
       end
+    end
+
+    initializer "turbo.middleware" do |app|
+      app.middleware.use Turbo::FrameRedirectMiddleware
     end
 
     initializer "turbo.mimetype" do
